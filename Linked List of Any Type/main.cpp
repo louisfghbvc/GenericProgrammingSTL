@@ -21,6 +21,7 @@ void instructions( void );
 
 int main( void )
 {
+   cout<<"aa"<<endl;
    ListNodePtr startPtr = NULL; // initially there are no nodes
    unsigned int choice; // user's choice
    char item; // char entered by user
