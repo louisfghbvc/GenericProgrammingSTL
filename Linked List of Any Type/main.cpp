@@ -12,6 +12,22 @@ struct listNode {
 typedef struct listNode ListNode; // synonym for struct listNode
 typedef ListNode *ListNodePtr; // synonym for ListNode*
 
+//陳泓睿
+template <class Node>
+struct node_wrap:public std::iterator<std::input_iterator_tag,int>{
+    Node* ptr;
+    node_wrap(Node* p = nullptr) : ptr(p) { }
+    Node& operator*() const{return *ptr;}
+    Node* operator->() const{return ptr;}
+    node_wrap& operator++(){ptr= ptr->nextPtr; return *this;}
+    node_wrap operator++(int){node_wrap tmp= *this; ptr= ptr->nextPtr; return tmp;}
+    bool operator==(const node_wrap& i) const{ return ptr== i.ptr; }
+    bool operator!=(const node_wrap& i) const{ return ptr!= i.ptr; }
+};
+template <class listNode> bool operator ==(const listNode& node, int n) { return node.data== n; }
+template <class listNode> bool operator !=(const listNode& node, int n) { return !(node == n); }
+//陳泓睿
+
 // prototypes
 void insert( ListNodePtr *sPtr, char value );
 char Delete( ListNodePtr *sPtr, char value );
@@ -21,7 +37,6 @@ void instructions( void );
 
 int main( void )
 {
-   cout<<"AAA"<<endl;
    ListNodePtr startPtr = NULL; // initially there are no nodes
    unsigned int choice; // user's choice
    char item; // char entered by user
@@ -32,7 +47,13 @@ int main( void )
 
    // loop while user does not choose 3
    while ( choice != 3 ) {
-
+      //陳泓睿
+        if(startPtr!=NULL)
+        {
+            auto pr = std::find(node_wrap<listNode<char>>(startPtr), node_wrap<listNode<char>>(startPtr), 'a');
+            cout<<*pr<<endl;
+        }
+      //陳泓睿
       switch ( choice ) {
          case 1:
             printf( "%s", "Enter a character: " );
