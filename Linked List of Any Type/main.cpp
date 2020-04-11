@@ -13,7 +13,7 @@ struct listNode {
 }; // end structure listNode
 
 template <typename T>
-using ListNode = listNode<T>; // synonym for struct listNode
+using ListNodePtr = listNode<T>*; // synonym for struct listNodeptr
 
 //陳泓睿
 template <typename T>
@@ -29,18 +29,24 @@ struct node_wrap: public iterator<input_iterator_tag, T>{
 };
 //陳泓睿
 
+template <typename T>
+struct LinkedList{
+    node_wrap<T>* start;
+    LinkedList(node_wrap<T>* p = nullptr) :start(p){}
+};
+
 // prototypes
-template<class ListNode, typename T>
-void insert( ListNode **sPtr, T value );
+template<typename T>
+void insert( LinkedList<T> mylist, T value );
 
-template<class ListNode, typename T>
-T Delete( ListNode **sPtr, T value );
+template<typename T>
+T Delete( LinkedList<T> mylist, T value );
 
-template<class ListNode>
-int isEmpty( ListNode* sPtr );
+template<typename T>
+int isEmpty( ListNodePtr<T> sPtr );
 
-template<class ListNode>
-void printList( ListNode *currentPtr );
+template<typename T>
+void printList( LinkedList<T> currentPtr );
 
 string init(); // choose type
 void instructions( void ); // choose action
@@ -49,8 +55,8 @@ bool input(string type, T &val, char choice);
 
 int main( void )
 {
-    listNode<char> *char_startPtr = NULL; // initially there are no nodes
-    listNode<int> *int_startPtr = NULL; // initially there are no nodes
+    LinkedList<char> char_list; // initially there are no nodes
+    LinkedList<int> int_list; // initially there are no nodes
 
     char choice; // user's choice
     int int_item;
@@ -70,25 +76,25 @@ int main( void )
                     printf( "Enter a item: " );
                     if(type == "int"){
                         while(!input(type, int_item, choice));
-                        insert( &int_startPtr, int_item); // insert item in list
-                        printList( int_startPtr );
+                        insert( int_list, int_item); // insert item in list
+                        printList( int_list );
                     }
                     else {
                         while(!input(type, char_item, choice));
-                        insert( &char_startPtr, char_item); // insert item in list
-                        printList( char_startPtr );
+                        insert( char_list, char_item); // insert item in list
+                        printList( char_list );
                     }
                     break;
                 case '2': // delete an element
                     printf( "Enter item to be deleted: " );
                     if(type == "int"){
                         // if list is not empty
-                        if ( !isEmpty( int_startPtr ) ) {
+                        if ( !isEmpty( int_list.start->ptr ) ) {
                             while(!input(type, int_item, choice));
                             // if character is found, remove it
-                            if ( Delete( &int_startPtr, int_item ) ) {
+                            if ( Delete( int_list, int_item ) ) {
                                 printf( "%d deleted.\n", int_item );
-                                printList( int_startPtr );
+                                printList( int_list );
                             }
                             else {
                                 printf( "%d not found.\n\n", int_item );
@@ -100,12 +106,12 @@ int main( void )
                     }
                     else{
                         // if list is not empty
-                        if ( !isEmpty( char_startPtr ) ) {
+                        if ( !isEmpty( char_list.start->ptr ) ) {
                             while(!input(type, char_item, choice));
                             // if character is found, remove it
-                            if ( Delete( &char_startPtr, char_item ) ) {
+                            if ( Delete( char_list, char_item ) ) {
                                 printf( "%c deleted.\n", char_item );
-                                printList( char_startPtr );
+                                printList( char_list );
                             }
                             else {
                                 printf( "%c not found.\n\n", char_item );
@@ -119,28 +125,28 @@ int main( void )
                 case '3':
                     printf( "Find a item: " );
                     if(type == "int"){
-                        if ( !isEmpty( int_startPtr ) ){
+                        if ( !isEmpty( int_list.start->ptr ) ){
                             while(!input(type, int_item, choice));
-                            auto pr = find(node_wrap<int>(int_startPtr), node_wrap<int>(), int_item);
+                            auto pr = find(*int_list.start, node_wrap<int>(), int_item);
                             if(pr != NULL)
                                 printf( "Find %d\n", int_item);
                             else
                                 printf( "Not Found.\n");
-                            printList( int_startPtr );
+                            printList( int_list );
                         }
                         else{
                             printf( "List is empty\n" );
                         }
                     }
                     else{
-                        if ( !isEmpty( char_startPtr ) ){
+                        if ( !isEmpty( char_list.start->ptr ) ){
                             while(!input(type, char_item, choice));
-                            auto pr = find(node_wrap<char>(char_startPtr), node_wrap<char>(), char_item);
+                            auto pr = find(*char_list.start, node_wrap<char>(), char_item);
                             if(pr != NULL)
                                 printf( "Find %c\n", char_item);
                             else
                                 printf( "Not Found.\n");
-                            printList( char_startPtr );
+                            printList( char_list );
                         }
                         else{
                             printf( "List is empty\n" );
@@ -217,14 +223,15 @@ void instructions( void )
 } // end function instructions
 
 // insert a new value into the list in sorted order
-template<class ListNode, typename T>
-void insert( ListNode **sPtr, T value )
+template<typename T>
+void insert( LinkedList<T> mylist, T value )
 {
-   ListNode *newPtr; // pointer to new node
-   ListNode *previousPtr; // pointer to previous node in list
-   ListNode *currentPtr; // pointer to current node in list
+   ListNodePtr<T> *sPtr = &(mylist.start->ptr);
+   ListNodePtr<T> newPtr; // pointer to new node
+   ListNodePtr<T> previousPtr; // pointer to previous node in list
+   ListNodePtr<T> currentPtr; // pointer to current node in list
 
-   newPtr = (ListNode *)malloc( sizeof( ListNode ) ); // create node
+   newPtr = (ListNodePtr<T> )malloc( sizeof( listNode<T> ) ); // create node
 
    if ( newPtr != NULL ) { // is space available
       newPtr->data = value; // place value in node
@@ -255,12 +262,13 @@ void insert( ListNode **sPtr, T value )
 } // end function insert
 
 // delete a list element
-template<class ListNode, typename T>
-T Delete( ListNode **sPtr, T value )
+template<typename T>
+T Delete( LinkedList<T> mylist, T value )
 {
-   ListNode *previousPtr; // pointer to previous node in list
-   ListNode *currentPtr; // pointer to current node in list
-   ListNode *tempPtr; // temporary node pointer
+   ListNodePtr<T>* sPtr = &(mylist.start->ptr);
+   ListNodePtr<T> previousPtr; // pointer to previous node in list
+   ListNodePtr<T> currentPtr; // pointer to current node in list
+   ListNodePtr<T> tempPtr; // temporary node pointer
 
    // delete first node
    if ( value == ( *sPtr )->data ) {
@@ -292,16 +300,17 @@ T Delete( ListNode **sPtr, T value )
 } // end function delete
 
 // return 1 if the list is empty, 0 otherwise
-template<class ListNode>
-int isEmpty( ListNode *sPtr )
+template<typename T>
+int isEmpty( ListNodePtr<T> sPtr )
 {
    return sPtr == NULL;
 } // end function isEmpty
 
 // print the list
-template<class ListNode>
-void printList( ListNode *currentPtr )
+template<typename T>
+void printList( LinkedList<T> mylist )
 {
+   ListNodePtr<T> currentPtr = mylist.start->ptr;
    // if list is empty
    if ( isEmpty( currentPtr ) ) {
       puts( "List is empty.\n" );
@@ -318,6 +327,7 @@ void printList( ListNode *currentPtr )
       puts( "NULL\n" );
    } // end else
 } // end function printList
+
 
 
 
