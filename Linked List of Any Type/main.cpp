@@ -6,29 +6,27 @@ using namespace std;
 // self-referential structure
 template <typename T>
 struct listNode {
-   T data;
-   listNode *nextPtr;
-   bool operator==(const T& i) const {return data == i;}
-   bool operator!=(const T& i) const {return !data == i;}
+    T data;
+    listNode *nextPtr;
+    bool operator==(const T& i) const {return data == i;}
+    bool operator!=(const T& i) const {return !data == i;}
 }; // end structure listNode
 
 template <typename T>
 using ListNode = listNode<T>; // synonym for struct listNode
 
 //陳泓睿
-template <class ListNode>
-struct node_wrap: public iterator<input_iterator_tag, int>{
-    ListNode* ptr;
-    node_wrap(ListNode* p = nullptr) : ptr(p) { }
-    ListNode& operator*() const{return *ptr;}
-    ListNode* operator->() const{return ptr;}
+template <typename T>
+struct node_wrap: public iterator<input_iterator_tag, T>{
+    listNode<T>* ptr;
+    node_wrap(listNode<T>* p = nullptr) : ptr(p) { }
+    listNode<T>& operator*() const{return *ptr;}
+    listNode<T>* operator->() const{return ptr;}
     node_wrap& operator++(){ptr= ptr->nextPtr; return *this;}
     node_wrap operator++(int){node_wrap tmp= *this; ptr= ptr->nextPtr; return tmp;}
     bool operator==(const node_wrap& i) const{ return ptr== i.ptr; }
     bool operator!=(const node_wrap& i) const{ return ptr!= i.ptr; }
 };
-//template <class listNode> bool operator ==(const listNode& node, int n) { return node.data== n; }
-//template <class listNode> bool operator !=(const listNode& node, int n) { return !(node == n); }
 //陳泓睿
 
 // prototypes
@@ -48,61 +46,70 @@ void instructions( void );
 
 int main( void )
 {
-   ListNode<char> *startPtr = NULL; // initially there are no nodes
-   unsigned int choice; // user's choice
-   char item; // char entered by user
+    listNode<char> *startPtr = NULL; // initially there are no nodes
+    char choice; // user's choice
+    char item, first; // char entered by user
 
-   instructions(); // display the menu
-   printf( "%s", "? " );
-   scanf( "%u", &choice );
+    instructions(); // display the menu
+    printf( "? " );
+    scanf( "\n%c", &choice);
 
    // loop while user does not choose 3
-   while ( choice != 3 ) {
-      //陳泓睿
-        if(startPtr != NULL)
-        {
-            //auto pr = find(node_wrap<listNode<char>>(startPtr), node_wrap<listNode<char>>(startPtr), 'a');
-            //cout<<*pr<<endl;
-        }
-      //陳泓睿
-      switch ( choice ) {
-         case 1:
-            printf( "%s", "Enter a character: " );
-            scanf( "\n%c", &item );
-            insert( &startPtr, item ); // insert item in list
-            printList( startPtr );
-            break;
-         case 2: // delete an element
+    while ( choice != '4' ) {
+
+        switch ( choice ) {
+            case '1':
+                printf( "Enter a character: " );
+                scanf( "\n%c", &item );
+                insert( &startPtr, item ); // insert item in list
+                printList( startPtr );
+                break;
+            case '2': // delete an element
             // if list is not empty
-            if ( !isEmpty( startPtr ) ) {
-               printf( "%s", "Enter character to be deleted: " );
-               scanf( "\n%c", &item );
+                if ( !isEmpty( startPtr ) ) {
+                    printf( "Enter character to be deleted: " );
+                    scanf( "\n%c", &item );
 
-               // if character is found, remove it
-               if ( Delete( &startPtr, item ) ) { // remove item
-                  printf( "%c deleted.\n", item );
-                  printList( startPtr );
-               } // end if
-               else {
-                  printf( "%c not found.\n\n", item );
-               } // end else
-            } // end if
-            else {
-               puts( "List is empty.\n" );
-            } // end else
+                    // if character is found, remove it
+                    if ( Delete( &startPtr, item ) ) {
+                        printf( "%c deleted.\n", item );
+                        printList( startPtr );
+                    }
+                    else {
+                        printf( "%c not found.\n\n", item );
+                    }
+                }
+                else {
+                    puts( "List is empty.\n" );
+                }
 
             break;
-         default:
-            puts( "Invalid choice.\n" );
-            instructions();
-            break;
-      } // end switch
+            case '3':
+                if ( !isEmpty( startPtr ) ){
+                    printf( "Find a character: " );
+                    scanf( "\n%c", &item );
+                    auto pr = find(node_wrap<char>(startPtr), node_wrap<char>(), item);
+                    if(pr != NULL)
+                        printf( "Find %c\n", item);
+                    else
+                        printf( "Not Found.\n");
+                    printList( startPtr );
+                }
+                else{
+                    printf( "List is empty\n" );
+                }
+                break;
+            default:
+                puts( "Invalid choice.\n" );
+                instructions();
+                break;
+        } // end switch
 
-      printf( "%s", "? " );
-      scanf( "%u", &choice );
-   } // end while
+        printf( "? " );
+        scanf( "\n%c", &choice);
+    } // end while
 
-   puts( "End of run." );
+    puts( "End of run." );
 } // end main
 
 // display program instructions to user
@@ -111,7 +118,8 @@ void instructions( void )
    puts( "Enter your choice:\n"
       "   1 to insert an element into the list.\n"
       "   2 to delete an element from the list.\n"
-      "   3 to end." );
+      "   3 to find an element from the list.\n"
+      "   4 to end." );
 } // end function instructions
 
 // insert a new value into the list in sorted order
@@ -189,14 +197,12 @@ T Delete( ListNode **sPtr, T value )
    return '\0';
 } // end function delete
 
-
 // return 1 if the list is empty, 0 otherwise
 template<class ListNode>
 int isEmpty( ListNode *sPtr )
 {
    return sPtr == NULL;
 } // end function isEmpty
-
 
 // print the list
 template<class ListNode>
