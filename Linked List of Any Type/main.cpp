@@ -45,7 +45,7 @@ void printList( ListNode *currentPtr );
 string init(); // choose type
 void instructions( void ); // choose action
 template<typename T>
-bool input(string type, T &val);
+bool input(string type, T &val, char choice);
 
 int main( void )
 {
@@ -69,23 +69,22 @@ int main( void )
                 case '1':
                     printf( "Enter a item: " );
                     if(type == "int"){
-                        while(!input(type, int_item));
+                        while(!input(type, int_item, choice));
                         insert( &int_startPtr, int_item); // insert item in list
                         printList( int_startPtr );
                     }
                     else {
-                        while(!input(type, char_item));
+                        while(!input(type, char_item, choice));
                         insert( &char_startPtr, char_item); // insert item in list
                         printList( char_startPtr );
                     }
                     break;
                 case '2': // delete an element
-                // if list is not empty
+                    printf( "Enter item to be deleted: " );
                     if(type == "int"){
+                        // if list is not empty
                         if ( !isEmpty( int_startPtr ) ) {
-                            printf( "Enter item to be deleted: " );
-                            while(!input(type, int_item));
-
+                            while(!input(type, int_item, choice));
                             // if character is found, remove it
                             if ( Delete( &int_startPtr, int_item ) ) {
                                 printf( "%d deleted.\n", int_item );
@@ -100,10 +99,9 @@ int main( void )
                         }
                     }
                     else{
+                        // if list is not empty
                         if ( !isEmpty( char_startPtr ) ) {
-                            printf( "Enter item to be deleted: " );
-                            while(!input(type, char_item));
-
+                            while(!input(type, char_item, choice));
                             // if character is found, remove it
                             if ( Delete( &char_startPtr, char_item ) ) {
                                 printf( "%c deleted.\n", char_item );
@@ -119,11 +117,10 @@ int main( void )
                     }
                 break;
                 case '3':
+                    printf( "Find a item: " );
                     if(type == "int"){
                         if ( !isEmpty( int_startPtr ) ){
-                            printf( "Find a item: " );
-                            while(!input(type, int_item));
-
+                            while(!input(type, int_item, choice));
                             auto pr = find(node_wrap<int>(int_startPtr), node_wrap<int>(), int_item);
                             if(pr != NULL)
                                 printf( "Find %d\n", int_item);
@@ -137,9 +134,7 @@ int main( void )
                     }
                     else{
                         if ( !isEmpty( char_startPtr ) ){
-                            printf( "Find a item: " );
-                            while(!input(type, char_item));
-
+                            while(!input(type, char_item, choice));
                             auto pr = find(node_wrap<char>(char_startPtr), node_wrap<char>(), char_item);
                             if(pr != NULL)
                                 printf( "Find %c\n", char_item);
@@ -170,7 +165,7 @@ int main( void )
 
 //check if is type
 template<typename T>
-bool input(string type, T &val){
+bool input(string type, T &val, char choice){
     int i; char c;
     cin.ignore();
     if(isdigit(cin.peek())){
@@ -180,7 +175,6 @@ bool input(string type, T &val){
             return 1;
         }
         printf("Hey guys. Don't trick me. Please put Character!\n");
-        return 0;
     }
     else{
         cin >> c;
@@ -189,8 +183,15 @@ bool input(string type, T &val){
             return 1;
         }
         printf("Hey guys. Don't trick me. Please put Integer!\n");
-        return 0;
     }
+
+    if(choice == '1')
+        printf( "Enter a item: " );
+    else if(choice == '2')
+        printf( "Enter item to be deleted: " );
+    else
+        printf( "Find a item: " );
+    return 0;
 }
 
 // choose type int or char
