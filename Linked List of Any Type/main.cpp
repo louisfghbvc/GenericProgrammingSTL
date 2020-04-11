@@ -211,7 +211,7 @@ void printList( ListNode *currentPtr )
 
       // while not the end of the list
       while ( currentPtr != NULL ) {
-         printf( "%c --> ", currentPtr->data );
+         cout << currentPtr->data << " --> ";
          currentPtr = currentPtr->nextPtr;
       } // end while
 
