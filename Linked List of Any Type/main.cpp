@@ -42,8 +42,10 @@ int isEmpty( ListNode* sPtr );
 template<class ListNode>
 void printList( ListNode *currentPtr );
 
-string init();
-void instructions( void );
+string init(); // choose type
+void instructions( void ); // choose action
+template<typename T>
+bool input(string type, T &val);
 
 int main( void )
 {
@@ -67,12 +69,12 @@ int main( void )
                 case '1':
                     printf( "Enter a item: " );
                     if(type == "int"){
-                        cin >> int_item;
+                        while(!input(type, int_item));
                         insert( &int_startPtr, int_item); // insert item in list
                         printList( int_startPtr );
                     }
                     else {
-                        cin >> char_item;
+                        while(!input(type, char_item));
                         insert( &char_startPtr, char_item); // insert item in list
                         printList( char_startPtr );
                     }
@@ -82,7 +84,7 @@ int main( void )
                     if(type == "int"){
                         if ( !isEmpty( int_startPtr ) ) {
                             printf( "Enter item to be deleted: " );
-                            cin >> int_item;
+                            while(!input(type, int_item));
 
                             // if character is found, remove it
                             if ( Delete( &int_startPtr, int_item ) ) {
@@ -100,7 +102,7 @@ int main( void )
                     else{
                         if ( !isEmpty( char_startPtr ) ) {
                             printf( "Enter item to be deleted: " );
-                            cin >> char_item;
+                            while(!input(type, char_item));
 
                             // if character is found, remove it
                             if ( Delete( &char_startPtr, char_item ) ) {
@@ -120,7 +122,7 @@ int main( void )
                     if(type == "int"){
                         if ( !isEmpty( int_startPtr ) ){
                             printf( "Find a item: " );
-                            cin >> int_item;
+                            while(!input(type, int_item));
 
                             auto pr = find(node_wrap<int>(int_startPtr), node_wrap<int>(), int_item);
                             if(pr != NULL)
@@ -136,7 +138,7 @@ int main( void )
                     else{
                         if ( !isEmpty( char_startPtr ) ){
                             printf( "Find a item: " );
-                            cin >> char_item;
+                            while(!input(type, char_item));
 
                             auto pr = find(node_wrap<char>(char_startPtr), node_wrap<char>(), char_item);
                             if(pr != NULL)
@@ -166,11 +168,40 @@ int main( void )
 
 } // end main
 
+//check if is type
+template<typename T>
+bool input(string type, T &val){
+    int i; char c;
+    cin.ignore();
+    if(isdigit(cin.peek())){
+        cin >> i;
+        if(type == "int"){
+            val = i;
+            return 1;
+        }
+        printf("Hey guys. Don't trick me. Please put Character!\n");
+        return 0;
+    }
+    else{
+        cin >> c;
+        if(type == "char"){
+            val = c;
+            return 1;
+        }
+        printf("Hey guys. Don't trick me. Please put Integer!\n");
+        return 0;
+    }
+}
+
 // choose type int or char
 string init(){
     printf("Choose type : int or char.\n \"bye\" is End of process\n");
     string s;
     cin >> s;
+    while(s != "int" && s != "char" && s != "bye") {
+        printf("hey! I want you type correct type.\n");
+        cin >> s;
+    }
     return s;
 }
 
