@@ -162,17 +162,16 @@ int main( void )
         puts( "End of run." );
         type = init();
     }
-
+    puts( "End of run." );
 
 } // end main
 
 // choose type int or char
 string init(){
-    printf("Choose type : int or char\n");
+    printf("Choose type : int or char.\n \"bye\" is End of process\n");
     string s;
     cin >> s;
-    if(s == "int") return "int";
-    return "char";
+    return s;
 }
 
 // display program instructions to user
