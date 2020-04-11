@@ -55,8 +55,13 @@ bool input(string type, T &val, char choice);
 
 int main( void )
 {
-    LinkedList<char> char_list; // initially there are no nodes
-    LinkedList<int> int_list; // initially there are no nodes
+    listNode<char> *p = NULL; //init
+    node_wrap<char> np(p);   // init
+    listNode<int> *p2 = NULL; // init
+    node_wrap<int> np2(p2);  // init
+
+    LinkedList<char> char_list(&np); // initially there are no nodes
+    LinkedList<int> int_list(&np2); // initially there are no nodes
 
     char choice; // user's choice
     int int_item;
