@@ -42,13 +42,18 @@ int isEmpty( ListNode* sPtr );
 template<class ListNode>
 void printList( ListNode *currentPtr );
 
+string init();
 void instructions( void );
 
 int main( void )
 {
-    listNode<char> *startPtr = NULL; // initially there are no nodes
+    listNode<char> *char_startPtr = NULL; // initially there are no nodes
+    listNode<int> *int_startPtr = NULL; // initially there are no nodes
+
+    string type = init();
     char choice; // user's choice
-    char item; // char entered by user
+    int int_item;
+    char char_item;
 
     instructions(); // display the menu
     printf( "? " );
@@ -59,45 +64,89 @@ int main( void )
 
         switch ( choice ) {
             case '1':
-                printf( "Enter a character: " );
-                cin >> item;
-                insert( &startPtr, item ); // insert item in list
-                printList( startPtr );
+                printf( "Enter a item: " );
+                if(type == "int"){
+                    cin >> int_item;
+                    insert( &int_startPtr, int_item); // insert item in list
+                    printList( int_startPtr );
+                }
+                else {
+                    cin >> char_item;
+                    insert( &char_startPtr, char_item); // insert item in list
+                    printList( char_startPtr );
+                }
                 break;
             case '2': // delete an element
             // if list is not empty
-                if ( !isEmpty( startPtr ) ) {
-                    printf( "Enter character to be deleted: " );
-                    cin >> item;
+                if(type == "int"){
+                    if ( !isEmpty( int_startPtr ) ) {
+                        printf( "Enter item to be deleted: " );
+                        cin >> int_item;
 
-                    // if character is found, remove it
-                    if ( Delete( &startPtr, item ) ) {
-                        printf( "%c deleted.\n", item );
-                        printList( startPtr );
+                        // if character is found, remove it
+                        if ( Delete( &int_startPtr, int_item ) ) {
+                            printf( "%d deleted.\n", int_item );
+                            printList( int_startPtr );
+                        }
+                        else {
+                            printf( "%d not found.\n\n", int_item );
+                        }
                     }
                     else {
-                        printf( "%c not found.\n\n", item );
+                        puts( "List is empty.\n" );
                     }
                 }
-                else {
-                    puts( "List is empty.\n" );
-                }
+                else{
+                    if ( !isEmpty( char_startPtr ) ) {
+                        printf( "Enter item to be deleted: " );
+                        cin >> char_item;
 
+                        // if character is found, remove it
+                        if ( Delete( &char_startPtr, char_item ) ) {
+                            printf( "%c deleted.\n", char_item );
+                            printList( char_startPtr );
+                        }
+                        else {
+                            printf( "%c not found.\n\n", char_item );
+                        }
+                    }
+                    else {
+                        puts( "List is empty.\n" );
+                    }
+                }
             break;
             case '3':
-                if ( !isEmpty( startPtr ) ){
-                    printf( "Find a character: " );
-                    cin >> item;
+                if(type == "int"){
+                    if ( !isEmpty( int_startPtr ) ){
+                        printf( "Find a item: " );
+                        cin >> int_item;
 
-                    auto pr = find(node_wrap<char>(startPtr), node_wrap<char>(), item);
-                    if(pr != NULL)
-                        printf( "Find %c\n", item);
-                    else
-                        printf( "Not Found.\n");
-                    printList( startPtr );
+                        auto pr = find(node_wrap<int>(int_startPtr), node_wrap<int>(), int_item);
+                        if(pr != NULL)
+                            printf( "Find %d\n", int_item);
+                        else
+                            printf( "Not Found.\n");
+                        printList( int_startPtr );
+                    }
+                    else{
+                        printf( "List is empty\n" );
+                    }
                 }
                 else{
-                    printf( "List is empty\n" );
+                    if ( !isEmpty( char_startPtr ) ){
+                        printf( "Find a item: " );
+                        cin >> char_item;
+
+                        auto pr = find(node_wrap<char>(char_startPtr), node_wrap<char>(), char_item);
+                        if(pr != NULL)
+                            printf( "Find %c\n", char_item);
+                        else
+                            printf( "Not Found.\n");
+                        printList( char_startPtr );
+                    }
+                    else{
+                        printf( "List is empty\n" );
+                    }
                 }
                 break;
             default:
@@ -112,6 +161,15 @@ int main( void )
 
     puts( "End of run." );
 } // end main
+
+// choose type int or char
+string init(){
+    printf("Choose type : int or char\n");
+    string s;
+    cin >> s;
+    if(s == "int") return "int";
+    return "char";
+}
 
 // display program instructions to user
 void instructions( void )
