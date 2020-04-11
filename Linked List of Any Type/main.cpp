@@ -1,43 +1,54 @@
 // Fig. 12.3: fig12_03.c
 // Inserting and deleting nodes in a list
-#include <stdio.h>
-#include <stdlib.h>
+#include <bits/stdc++.h>
+using namespace std;
 
 // self-referential structure
+template <typename T>
 struct listNode {
-   char data; // each listNode contains a character
-   struct listNode *nextPtr; // pointer to next node
+   T data;
+   listNode *nextPtr;
+   bool operator==(const T& i) const {return data == i;}
+   bool operator!=(const T& i) const {return !data == i;}
 }; // end structure listNode
 
-typedef struct listNode ListNode; // synonym for struct listNode
-typedef ListNode *ListNodePtr; // synonym for ListNode*
+template <typename T>
+using ListNode = listNode<T>; // synonym for struct listNode
 
 //陳泓睿
-template <class Node>
-struct node_wrap:public std::iterator<std::input_iterator_tag,int>{
-    Node* ptr;
-    node_wrap(Node* p = nullptr) : ptr(p) { }
-    Node& operator*() const{return *ptr;}
-    Node* operator->() const{return ptr;}
+template <class ListNode>
+struct node_wrap: public iterator<input_iterator_tag, int>{
+    ListNode* ptr;
+    node_wrap(ListNode* p = nullptr) : ptr(p) { }
+    ListNode& operator*() const{return *ptr;}
+    ListNode* operator->() const{return ptr;}
     node_wrap& operator++(){ptr= ptr->nextPtr; return *this;}
     node_wrap operator++(int){node_wrap tmp= *this; ptr= ptr->nextPtr; return tmp;}
     bool operator==(const node_wrap& i) const{ return ptr== i.ptr; }
     bool operator!=(const node_wrap& i) const{ return ptr!= i.ptr; }
 };
-template <class listNode> bool operator ==(const listNode& node, int n) { return node.data== n; }
-template <class listNode> bool operator !=(const listNode& node, int n) { return !(node == n); }
+//template <class listNode> bool operator ==(const listNode& node, int n) { return node.data== n; }
+//template <class listNode> bool operator !=(const listNode& node, int n) { return !(node == n); }
 //陳泓睿
 
 // prototypes
-void insert( ListNodePtr *sPtr, char value );
-char Delete( ListNodePtr *sPtr, char value );
-int isEmpty( ListNodePtr sPtr );
-void printList( ListNodePtr currentPtr );
+template<class ListNode, typename T>
+void insert( ListNode **sPtr, T value );
+
+template<class ListNode, typename T>
+T Delete( ListNode **sPtr, T value );
+
+template<class ListNode>
+int isEmpty( ListNode* sPtr );
+
+template<class ListNode>
+void printList( ListNode *currentPtr );
+
 void instructions( void );
 
 int main( void )
 {
-   ListNodePtr startPtr = NULL; // initially there are no nodes
+   ListNode<char> *startPtr = NULL; // initially there are no nodes
    unsigned int choice; // user's choice
    char item; // char entered by user
 
@@ -48,10 +59,10 @@ int main( void )
    // loop while user does not choose 3
    while ( choice != 3 ) {
       //陳泓睿
-        if(startPtr!=NULL)
+        if(startPtr != NULL)
         {
-            auto pr = std::find(node_wrap<listNode<char>>(startPtr), node_wrap<listNode<char>>(startPtr), 'a');
-            cout<<*pr<<endl;
+            //auto pr = find(node_wrap<listNode<char>>(startPtr), node_wrap<listNode<char>>(startPtr), 'a');
+            //cout<<*pr<<endl;
         }
       //陳泓睿
       switch ( choice ) {
@@ -104,13 +115,14 @@ void instructions( void )
 } // end function instructions
 
 // insert a new value into the list in sorted order
-void insert( ListNodePtr *sPtr, char value )
+template<class ListNode, typename T>
+void insert( ListNode **sPtr, T value )
 {
-   ListNodePtr newPtr; // pointer to new node
-   ListNodePtr previousPtr; // pointer to previous node in list
-   ListNodePtr currentPtr; // pointer to current node in list
+   ListNode *newPtr; // pointer to new node
+   ListNode *previousPtr; // pointer to previous node in list
+   ListNode *currentPtr; // pointer to current node in list
 
-   newPtr = (ListNodePtr)malloc( sizeof( ListNode ) ); // create node
+   newPtr = (ListNode *)malloc( sizeof( ListNode ) ); // create node
 
    if ( newPtr != NULL ) { // is space available
       newPtr->data = value; // place value in node
@@ -141,11 +153,12 @@ void insert( ListNodePtr *sPtr, char value )
 } // end function insert
 
 // delete a list element
-char Delete( ListNodePtr *sPtr, char value )
+template<class ListNode, typename T>
+T Delete( ListNode **sPtr, T value )
 {
-   ListNodePtr previousPtr; // pointer to previous node in list
-   ListNodePtr currentPtr; // pointer to current node in list
-   ListNodePtr tempPtr; // temporary node pointer
+   ListNode *previousPtr; // pointer to previous node in list
+   ListNode *currentPtr; // pointer to current node in list
+   ListNode *tempPtr; // temporary node pointer
 
    // delete first node
    if ( value == ( *sPtr )->data ) {
@@ -176,14 +189,18 @@ char Delete( ListNodePtr *sPtr, char value )
    return '\0';
 } // end function delete
 
+
 // return 1 if the list is empty, 0 otherwise
-int isEmpty( ListNodePtr sPtr )
+template<class ListNode>
+int isEmpty( ListNode *sPtr )
 {
    return sPtr == NULL;
 } // end function isEmpty
 
+
 // print the list
-void printList( ListNodePtr currentPtr )
+template<class ListNode>
+void printList( ListNode *currentPtr )
 {
    // if list is empty
    if ( isEmpty( currentPtr ) ) {
