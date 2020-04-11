@@ -46,7 +46,7 @@ template<typename T>
 int isEmpty( ListNodePtr<T> sPtr );
 
 template<typename T>
-void printList( LinkedList<T> currentPtr );
+void printList( LinkedList<T> mylist );
 
 string init(); // choose type
 void instructions( void ); // choose action
