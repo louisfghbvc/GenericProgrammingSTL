@@ -48,11 +48,11 @@ int main( void )
 {
     listNode<char> *startPtr = NULL; // initially there are no nodes
     char choice; // user's choice
-    char item, first; // char entered by user
+    char item; // char entered by user
 
     instructions(); // display the menu
     printf( "? " );
-    scanf( "\n%c", &choice);
+    cin >> choice;
 
    // loop while user does not choose 3
     while ( choice != '4' ) {
@@ -60,7 +60,7 @@ int main( void )
         switch ( choice ) {
             case '1':
                 printf( "Enter a character: " );
-                scanf( "\n%c", &item );
+                cin >> item;
                 insert( &startPtr, item ); // insert item in list
                 printList( startPtr );
                 break;
@@ -68,7 +68,7 @@ int main( void )
             // if list is not empty
                 if ( !isEmpty( startPtr ) ) {
                     printf( "Enter character to be deleted: " );
-                    scanf( "\n%c", &item );
+                    cin >> item;
 
                     // if character is found, remove it
                     if ( Delete( &startPtr, item ) ) {
@@ -87,7 +87,8 @@ int main( void )
             case '3':
                 if ( !isEmpty( startPtr ) ){
                     printf( "Find a character: " );
-                    scanf( "\n%c", &item );
+                    cin >> item;
+
                     auto pr = find(node_wrap<char>(startPtr), node_wrap<char>(), item);
                     if(pr != NULL)
                         printf( "Find %c\n", item);
@@ -106,7 +107,7 @@ int main( void )
         } // end switch
 
         printf( "? " );
-        scanf( "\n%c", &choice);
+        cin >> choice;
     } // end while
 
     puts( "End of run." );
