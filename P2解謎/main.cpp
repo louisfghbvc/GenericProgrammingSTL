@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
                   {
                         count_number++;
                         integer3.assign(integer2.begin(),integer2.end());
+                        i=i-integer3.size()+2;
                         integer3.erase(it);
                   }
                   break;
@@ -101,13 +102,13 @@ int main(int argc, char *argv[])
     else//no argc default doing
     {
           vector<char> myset;
-          char A[]={"86497279124338829853247739010863405293025447146829920344573346706658889267496015380180347051372349465304012511077961308661577303776995189914"},character;
+          char character;
           int first_input,second_input, tmp, tmp2, tmp3;
           cin>>first_input>>second_input;
           for (int i = 0; i < first_input*second_input; i++)
           {
              character=RandomUpperChar();
-             myset.push_back(A[i]);
+             myset.push_back(character);
           }
           vector<int>integer,integer2,integer3;
           while(cin >> tmp >> tmp2 >> tmp3)
@@ -137,6 +138,7 @@ int main(int argc, char *argv[])
                   {
                         count_number++;
                         integer3.assign(integer2.begin(),integer2.end());
+                        i=i-integer3.size()+2;
                         integer3.erase(it);
                   }
                   break;
