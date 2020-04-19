@@ -9,18 +9,17 @@
 #include <string.h>
 #include <ctype.h>
 using namespace std;
-template<class InputIterator, class T>
-  InputIterator find (InputIterator first, InputIterator last, const T& val)
-{
-  while (first!=last) {
-    if (*first==val) return first;
-    cout<<*first<<" ";
-    ++first;
-  }
-  cout<<endl;
-  return last;
-}
 
+using std::ostream;
+
+template<typename T>
+
+ostream& operator<< (ostream& out, const vector<T>& v) {
+    for(int i = 0; i < v.size(); ++i) {
+        out << v[i];
+    }
+    return out;
+}
 char RandomUpperChar()
 {
   const string characters = "0123456789";
@@ -32,7 +31,15 @@ char RandomUpperChar()
 
   return characters[rand_num];
 }
-
+string vector_range(vector<char> A,int a,int b)
+{
+    string B="";
+    for(int i=a;i<b;i++)
+    {
+        B+=A.at(i);
+    }
+    return B;
+}
 int main(int argc, char *argv[])
 {
     if(argc!=1)
@@ -45,7 +52,8 @@ int main(int argc, char *argv[])
              character=RandomUpperChar();
              myset.push_back(character);
           }
-          vector<int>integer,integer2,integer3;
+          vector<char> integer,integer2;
+          vector<string> integer3;
           for(int i=3;i<argc;i+=3)
           {
             integer.push_back(atoi(argv[i]));
@@ -58,49 +66,22 @@ int main(int argc, char *argv[])
             integer2.push_back(myset.at((integer[0]-1)*second_input+integer[1]-1));//record pattern
           }
           int count_number=0;
-          for (auto it = integer2.begin();it<integer2.end();it++)
-              cout << *it-'0';
-          integer3.assign(integer2.begin(),integer2.end());
+          cout<<integer2;
           for(int i=0;i<myset.size();i++)
           {
-              auto it = integer3.begin();
-              for(int j=0;j<integer3.size();j++)
-              {
-                if(myset.at(i)==*it)
-                {
-                  integer3.erase(it);
-                  if(integer3.size() == 0 )
-                  {
-                        count_number++;
-                        integer3.assign(integer2.begin(),integer2.end());
-                        i=i-integer3.size()+2;
-                        integer3.erase(it);
-                  }
-                  break;
-                }
-                else
-                {
-                    if(j==integer3.size()-1)
-                    {
-                        integer3.assign(integer2.begin(),integer2.end());
-                        it = integer3.begin();
-                        while(it!=integer3.end()){
-                            if(myset.at(i)==*it)
-                            {
-                              integer3.erase(it);
-                              break;
-                            }
-                            it++;
-                        }
-                    }
-                }
-                it++;
-              }
+              if(i+integer2.size()<=myset.size())
+                integer3.push_back(vector_range(myset,i,i+integer2.size()));
           }
-          cout<<" "<<count_number<<endl;
+          sort(integer2.begin(),integer2.end());
+          do{
+                count_number+=count(integer3.begin(),integer3.end(),vector_range(integer2,0,integer2.size()));
+          }
+          while(next_permutation(integer2.begin(),integer2.end()));
+          cout<<" "<<count_number;
     }
     else//no argc default doing
     {
+          //char A[]={"86497279124338829853247739010863405293025447146829920344573346706658889267496015380180347051372349465304012511077961308661577303776995189914"};
           vector<char> myset;
           char character;
           int first_input,second_input, tmp, tmp2, tmp3;
@@ -109,8 +90,10 @@ int main(int argc, char *argv[])
           {
              character=RandomUpperChar();
              myset.push_back(character);
+             //myset.push_back(A[i]);
           }
-          vector<int>integer,integer2,integer3;
+          vector<char>integer,integer2;
+          vector<string> integer3;
           while(cin >> tmp >> tmp2 >> tmp3)
           {
             integer.push_back(tmp);
@@ -123,47 +106,18 @@ int main(int argc, char *argv[])
             integer2.push_back(myset.at((integer[0]-1)*second_input+integer[1]-1));//record pattern
           }
           int count_number=0;
-          for (auto it = integer2.begin();it<integer2.end();it++)
-              cout << *it-'0';
-          integer3.assign(integer2.begin(),integer2.end());
+          cout<<integer2;
           for(int i=0;i<myset.size();i++)
           {
-              auto it = integer3.begin();
-              for(int j=0;j<integer3.size();j++)
-              {
-                if(myset.at(i)==*it)
-                {
-                  integer3.erase(it);
-                  if(integer3.size() == 0 )
-                  {
-                        count_number++;
-                        integer3.assign(integer2.begin(),integer2.end());
-                        i=i-integer3.size()+2;
-                        integer3.erase(it);
-                  }
-                  break;
-                }
-                else
-                {
-                    if(j==integer3.size()-1)
-                    {
-                        integer3.assign(integer2.begin(),integer2.end());
-                        it = integer3.begin();
-                        while(it!=integer3.end()){
-                            if(myset.at(i)==*it)
-                            {
-                              integer3.erase(it);
-                              break;
-                            }
-                            it++;
-                        }
-                    }
-                }
-                it++;
-              }
-              //cout<<i<<" "<<integer3.size()<<" "<<myset.at(i)<<endl;
+              if(i+integer2.size()<=myset.size())
+                integer3.push_back(vector_range(myset,i,i+integer2.size()));
           }
-          cout<<" "<<count_number<<endl;
+          sort(integer2.begin(),integer2.end());
+          do{
+                count_number+=count(integer3.begin(),integer3.end(),vector_range(integer2,0,integer2.size()));
+          }
+          while(next_permutation(integer2.begin(),integer2.end()));
+          cout<<" "<<count_number;
      }
      return 0;
 }
