@@ -49,12 +49,8 @@ int main()
 
     for(i = 0; i < case_num; ++i){
         for(j = 0; j < 4; ++j){
-            ans = 0;
-            curr_gene = find(gene[i].begin(), gene[i].end(), in[j]);
-            while(curr_gene != gene[i].end()){
-                ++ans;
-                curr_gene = find(curr_gene+1, gene[i].end(), in[j]);
-            }
+            ans = count(gene[i].begin(), gene[i].end(), in[j])
+                    + count(gene[i].begin(), gene[i].end(), in[j+4]);
             if(j == 0)
                 cout << ans;
             else
@@ -65,7 +61,7 @@ int main()
         ans = 0;
         curr_gene = search(gene[i].begin(), gene[i].end(), target[i].begin(), target[i].end());
         while(curr_gene != gene[i].end()){
-            cout << distance(gene[i].begin(), curr_gene) << " ";
+            cout << curr_gene - gene[i].begin() << " ";
             ++ans;
             curr_gene = search(curr_gene+1, gene[i].end(), target[i].begin(), target[i].end());
         }
