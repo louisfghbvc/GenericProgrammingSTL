@@ -14,8 +14,11 @@ void init(){
     for(int i = 0; i < m; ++i)
         graph[i].clear();
     Groups.clear();
+    dep.clear();
     dep.resize(m, 1);
+    vis.clear();
     vis.resize(m);
+    par.clear();
     par.resize(m, -1);
 }
 
@@ -40,7 +43,8 @@ void print(int u){
 
 int main()
 {
-
+    freopen("input1.txt", "r", stdin);
+    freopen("output1.txt", "w", stdout);
     while(cin >> m >> n, m + n){
         init();
 
