@@ -47,9 +47,12 @@ int main()
     //freopen("input1.txt", "r", stdin);
     //freopen("output1.txt", "w", stdout);
     srand(time(NULL));
-
     while(cin >> m >> n, m + n){
         init();
+
+        clock_t t;
+        float Time_total=0.0;
+        t = clock();
 
         // build input
         for(int i = 0; i < m; ++i){
@@ -61,6 +64,11 @@ int main()
             }
             Groups.push_back(group);
         }
+
+        t = clock() - t;
+        cout << "input took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
+        Time_total+=((float) t)/CLOCKS_PER_SEC;
+        t = clock();
 
         // lambda, group compare
         auto group_compare = [](const multiset<int> &A, const  multiset<int> &B){
@@ -81,12 +89,22 @@ int main()
             }
         }
 
+        t = clock() - t;
+        cout << "compare each two group took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
+        Time_total+=((float) t)/CLOCKS_PER_SEC;
+        t = clock();
+
         // every node run dfs
         for(int i = 0; i < m; ++i){
             if(!vis[i]){
                 dfs(i, 1);
             }
         }
+
+        t = clock() - t;
+        cout << "every node run dfs took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
+        Time_total+=((float) t)/CLOCKS_PER_SEC;
+        t = clock();
 
         // find max group
         int mx = 0, mxid = -1;
@@ -96,10 +114,17 @@ int main()
                 mxid = i;
             }
         }
+        t = clock() - t;
+        cout << "find max group took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
+        Time_total+=((float) t)/CLOCKS_PER_SEC;
 
+        t = clock();
         cout << mx;
         print(mxid);
         cout << endl;
+
+        t = clock() - t;
+        cout << "Total took " << Time_total*1000 << " clicks (" << Time_total << " seconds).\n";
     }
     return 0;
 }
