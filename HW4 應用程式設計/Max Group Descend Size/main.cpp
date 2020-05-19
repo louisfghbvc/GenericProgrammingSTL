@@ -2,7 +2,7 @@
 #define N 505
 using namespace std;
 
-vector<vector<int>> Groups;
+vector<multiset<int>> Groups;
 vector<int> graph[N];
 vector<int> dep;
 vector<bool> vis;
@@ -45,29 +45,27 @@ void print(int u){
 int main()
 {
     //freopen("input1.txt", "r", stdin);
-    freopen("output1.txt", "w", stdout);
+    //freopen("output1.txt", "w", stdout);
     srand(time(NULL));
 
-    set<int,less<int>> A;
     while(cin >> m >> n, m + n){
         init();
 
         // build input
         for(int i = 0; i < m; ++i){
-            while(A.size()!=n)
-                A.insert(rand()%mod);
-
-            vector<int> group(A.begin(),A.end());
-            std::copy(group.begin(),group.end(),std::ostream_iterator<int>(std::cout," "));
-            cout<<"\n";
+            multiset<int> group;
+            for(int j = 0; j < n; ++j){
+                int t;
+                cin >> t;
+                group.insert(t);
+            }
             Groups.push_back(group);
-            A.clear();
         }
 
         // lambda, group compare
-        auto group_compare = [&](const vector<int> A, const vector<int> B){
-            for(int i = 0; i < (int)A.size(); ++i){
-                if(A[i] <= B[i]) return false;
+        auto group_compare = [](const multiset<int> &A, const  multiset<int> &B){
+            for(auto ai = A.begin(), bi = B.begin(); ai != A.end() && bi != B.end(); ++ai, ++bi){
+                if(*ai <= *bi) return false;
             }
             return true;
         };
