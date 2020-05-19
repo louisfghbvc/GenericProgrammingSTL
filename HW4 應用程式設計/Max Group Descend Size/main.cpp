@@ -8,6 +8,7 @@ vector<int> dep;
 vector<bool> vis;
 vector<int> par;
 
+const int mod = 1e9;
 int m, n;
 
 void init(){
@@ -43,19 +44,24 @@ void print(int u){
 
 int main()
 {
-    freopen("input1.txt", "r", stdin);
+    //freopen("input1.txt", "r", stdin);
     freopen("output1.txt", "w", stdout);
+    srand(time(NULL));
+
+    set<int,less<int>> A;
     while(cin >> m >> n, m + n){
         init();
 
         // build input
         for(int i = 0; i < m; ++i){
-            vector<int> group(n, 0);
-            for(int j = 0; j < n; ++j){
-                cin >> group[j];
-            }
-            sort(group.begin(), group.end());
+            while(A.size()!=n)
+                A.insert(rand()%mod);
+
+            vector<int> group(A.begin(),A.end());
+            std::copy(group.begin(),group.end(),std::ostream_iterator<int>(std::cout," "));
+            cout<<"\n";
             Groups.push_back(group);
+            A.clear();
         }
 
         // lambda, group compare
@@ -108,7 +114,6 @@ input:
 182 170 183 188 181 199 178 178 198 176
 166 155 168 186 150 192 193 166 190 176
 0 0
-
 output:
 3 4 1 2
 **/
