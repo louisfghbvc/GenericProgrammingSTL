@@ -4,10 +4,13 @@ using namespace std;
 const int mod = 1e9;
 const int N = 501;
 const int X = 5000;
+
 int main()
 {
     freopen("input.txt", "w", stdout);
     srand(time(NULL));
+
+    set<int,less<int>> A;
 
     int data_num = 10;
     int m, n, x;
@@ -16,14 +19,12 @@ int main()
         n = rand() % N;
         cout << m << " " << n << endl;
         for(int j = 0; j < m; j++){
-            for(int k = 0; k < n; k++){
-                x = rand()%mod;
-                if(!k)
-                    cout << x;
-                else
-                    cout << " " << x;
-            }
+            while(A.size()!=n)
+                A.insert(rand()%mod);
+            for(auto B:A)
+               cout<<B++<<" ";
             cout << endl;
+            A.clear();
         }
     }
     cout << "0 0\n";
