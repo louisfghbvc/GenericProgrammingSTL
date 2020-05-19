@@ -1,32 +1,38 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <time.h>
+#include <string.h>
+#include <string>
+#include <set>
 using namespace std;
 
-const int mod = 1e9;
-const int N = 501;
-const int X = 5000;
+const int mod=1e9;
+int main(){
+    int N, M, length, i, j;
+    srand( time( NULL ) );
+    int A[6]={1000, 5000, 10000, 50000, 100000, 500000},B[3]={100, 500, 1000};
+    for(int k=0;k<6;k++)
+    {
+    	for(int l=0;l<3;l++)
+    	{
+            N=A[k];
+    		M=B[l];
+    	    string name= "N"+to_string(N)+"M"+to_string(M);
+            ofstream out (name+".in");
 
-int main()
-{
-    freopen("input.txt", "w", stdout);
-    srand(time(NULL));
-
-    set<int,less<int>> A;
-
-    int data_num = 10;
-    int m, n, x;
-    for(int i = 0; i < data_num; ++i){
-        m = rand() % N;
-        n = rand() % N;
-        cout << m << " " << n << endl;
-        for(int j = 0; j < m; j++){
-            while(A.size()!=n)
-                A.insert(rand()%mod);
-            for(auto B:A)
-               cout<<B++<<" ";
-            cout << endl;
-            A.clear();
-        }
+			for( i = 0; i < N; i++ ){
+				   multiset<int> group;
+				for( j = 0; j < M; j++ ){
+					group.insert(rand()%mod);
+				}
+				for(auto B:group)
+                    out<<B++<<" ";
+                out << endl;
+			}
+            out.close();
+    	}
     }
-    cout << "0 0\n";
+    cout<<"end"<<endl;
     return 0;
 }
