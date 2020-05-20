@@ -30,6 +30,7 @@ int main(){
                     out<<B++<<" ";
                 out << endl;
 			}
+	    out<<0<<" "<<0;
             out.close();
     	}
     }
