@@ -22,15 +22,12 @@ int main(){
             ofstream out (name+".in");
 
 			for( i = 0; i < N; i++ ){
-				   multiset<int> group;
 				for( j = 0; j < M; j++ ){
-					group.insert(rand()%mod);
+					out << rand()% mod << " ";
 				}
-				for(auto B:group)
-                    out<<B++<<" ";
                 out << endl;
 			}
-	    out<<0<<" "<<0;
+            out << 0 << " " << 0 << "\n";
             out.close();
     	}
     }
