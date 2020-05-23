@@ -9,10 +9,10 @@ using namespace std;
 
 const int mod=1e9;
 int main(){
-    int N, M, length, i, j;
+    int N, M, i, j;
     srand( time( NULL ) );
     int A[5]={1000, 5000, 10000, 50000, 100000},B[3]={100, 500, 1000};
-    for(int k=0;k<6;k++)
+    for(int k=0;k<5;k++)
     {
     	for(int l=0;l<3;l++)
     	{
