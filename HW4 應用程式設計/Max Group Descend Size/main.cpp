@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 #define N 505
+//#define time
 using namespace std;
 
 vector<multiset<int>> Groups;
 vector<int> graph[N];
 vector<int> dep;
 vector<bool> vis;
-vector<int> par;
+vector<int> nxt;
 
 const int mod = 1e9;
 int m, n;
@@ -19,40 +20,43 @@ void init(){
     dep.resize(m, 1);
     vis.clear();
     vis.resize(m);
-    par.clear();
-    par.resize(m, -1);
+    nxt.clear();
+    nxt.resize(m, mod);
 }
 
-void dfs(int u, int depth){
-    dep[u] = depth;
+int dfs(int u){
+    if(vis[u]) return dep[u];
     vis[u] = 1;
+    int uDep = 1;
     for(const auto &v : graph[u]){
-        if(dep[u]+1 > dep[v]){
-            par[v] = u;
-            dfs(v, dep[u]+1);
+        int vDep = dfs(v);
+        if(vDep+1 > uDep){
+            uDep = vDep+1;
+            nxt[u] = v;
         }
     }
+    return dep[u] = uDep;
 }
 
 void print(int u){
-    if(u == -1){
-        return;
+    for(; u != mod; u = nxt[u]){
+        cout << " " << u+1;
     }
-    print(par[u]);
-    cout << " " << u+1;
 }
 
 int main()
 {
-    //freopen("input1.txt", "r", stdin);
-    //freopen("output1.txt", "w", stdout);
+    //freopen("input2.txt", "r", stdin);
+    //freopen("output2.txt", "w", stdout);
     srand(time(NULL));
     while(cin >> m >> n, m + n){
         init();
 
+#ifdef time
         clock_t t;
         float Time_total=0.0;
         t = clock();
+#endif
 
         // build input
         for(int i = 0; i < m; ++i){
@@ -65,10 +69,12 @@ int main()
             Groups.push_back(group);
         }
 
+#ifdef time
         t = clock() - t;
         cout << "input took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
         Time_total+=((float) t)/CLOCKS_PER_SEC;
         t = clock();
+#endif
 
         // lambda, group compare
         auto group_compare = [](const multiset<int> &A, const  multiset<int> &B){
@@ -89,22 +95,26 @@ int main()
             }
         }
 
+#ifdef time
         t = clock() - t;
         cout << "compare each two group took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
         Time_total+=((float) t)/CLOCKS_PER_SEC;
         t = clock();
+#endif
 
         // every node run dfs
         for(int i = 0; i < m; ++i){
             if(!vis[i]){
-                dfs(i, 1);
+                dfs(i);
             }
         }
 
+#ifdef time
         t = clock() - t;
         cout << "every node run dfs took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
         Time_total+=((float) t)/CLOCKS_PER_SEC;
         t = clock();
+#endif
 
         // find max group
         int mx = 0, mxid = -1;
@@ -114,17 +124,24 @@ int main()
                 mxid = i;
             }
         }
+
+#ifdef time
         t = clock() - t;
         cout << "find max group took " << t << " clicks (" << ((float) t)/CLOCKS_PER_SEC << " seconds).\n";
         Time_total+=((float) t)/CLOCKS_PER_SEC;
 
         t = clock();
+#endif
+
         cout << mx;
         print(mxid);
         cout << endl;
 
+#ifdef time
         t = clock() - t;
         cout << "Total took " << Time_total*1000 << " clicks (" << Time_total << " seconds).\n";
+#endif
+
     }
     return 0;
 }
