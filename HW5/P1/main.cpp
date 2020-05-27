@@ -14,7 +14,7 @@ int main()
     fout.open("P1.out");
 
     //regular expression
-    regex sentence_format("([A-z]+)(.)");
+    regex sentence_format("([A-z]+)");
     string curr_sentence;
     smatch m;
 
@@ -23,19 +23,24 @@ int main()
 
     while(getline(fin, curr_sentence)){
 
-        //clear output vector every time
-        words.clear();
+        if(!words.empty()){
+
+            //clear output vector each time
+            words.clear();
+
+            //separate each output with '\n'
+            fout << endl;
+        }
 
         //get words
         auto curr = curr_sentence.cbegin(), last = curr_sentence.cend();
         for(; regex_search(curr, last, m, sentence_format); curr = m.suffix().first)
-            words.push_back(m.str(1));
+            words.push_back(m.str());
 
         //sort & output
         sort(words.begin(), words.end(), greater<string>());
         for(string word : words)
             fout << word << endl;
-        fout << endl;
     }
     return 0;
 }
