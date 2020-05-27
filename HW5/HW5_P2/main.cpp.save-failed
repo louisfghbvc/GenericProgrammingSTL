@@ -1,0 +1,33 @@
+#include <iostream>
+#include <regex>
+#include <string>
+using namespace std;
+
+int main()
+{
+    int B;
+    string A;
+    smatch m;
+    regex e ("(\\d\\d\\d\\d)-(\\d\\d\\d\\d)-(\\d\\d\\d\\d)-(\\d\\d\\d\\d)");
+    while(!cin.eof())
+    {
+        B=0;
+        cin>>A;
+        if(regex_match (A, m, e))
+        {
+            //regex_match (A, m, e);
+             for (smatch::iterator it = m.begin(); it!=m.end(); ++it) {
+                {
+                    cout <<"stoi(*it)=" <<stoi(*it) << endl;
+                    B+=stoi(*it);
+                    cout<<"int B = "<<B<<endl;
+                }
+            }
+            cout<<"TRUE "<<B<<endl;
+        }
+        else
+            cout<<"FALSE"<<endl;
+        cout<<endl;
+    }
+    return 0;
+}
