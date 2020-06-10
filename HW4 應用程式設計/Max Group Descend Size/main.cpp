@@ -40,15 +40,20 @@ int dfs(int u){
 
 void print(int u){
     for(; u != mod; u = nxt[u]){
-        cout << " " << u+1;
+        bool f = 1;
+        for(const auto&x : Groups[u]){
+            if(!f) cout << " ";
+            cout << x;
+            f = 0;
+        }
+        cout << endl;
     }
 }
 
 int main()
 {
-    //freopen("input2.txt", "r", stdin);
-    //freopen("output2.txt", "w", stdout);
-    srand(time(NULL));
+    //freopen("input1.txt", "r", stdin);
+    //freopen("output1.txt", "w", stdout);
     while(cin >> m >> n, m + n){
         init();
 
@@ -133,9 +138,8 @@ int main()
         t = clock();
 #endif
 
-        cout << mx;
+        cout << mx << endl;
         print(mxid);
-        cout << endl;
 
 #ifdef time
         t = clock() - t;
@@ -155,5 +159,8 @@ input:
 166 155 168 186 150 192 193 166 190 176
 0 0
 output:
-3 4 1 2
+3
+182 170 183 188 181 199 178 178 198 176
+179 159 182 184 178 193 173 174 192 170
+169 151 170 173 164 188 157 164 186 152
 **/
