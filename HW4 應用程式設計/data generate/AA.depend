@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1592279799 source:c:\users\cs2019\desktop\aa\main.cpp
+	<iostream>
+	<cstdlib>
+	<fstream>
+	<time.h>
+	<string.h>
+	<string>
+	<set>
+
