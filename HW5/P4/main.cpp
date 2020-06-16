@@ -14,7 +14,7 @@ int main()
     fout.open("P4.out");
 
     //regular expression
-    regex floating_constant_format("(-?(([0-9]*\\.[0-9]+)|([0-9]+\\.))([eE][-+]?[0-9]+)?[fFlL]?)|(-?[0-9]+[eE][-+]?[0-9]+[fFlL]?)");
+    regex floating_constant_format("((([0-9]*\\.[0-9]+)|([0-9]+\\.))([eE][-+]?[0-9]+)?[fFlL]?)|([0-9]+[eE][-+]?[0-9]+[fFlL]?)");
     string curr_sentence;
     smatch m;
 
