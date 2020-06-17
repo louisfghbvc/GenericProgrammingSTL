@@ -9,7 +9,7 @@ using namespace std;
 
 const int mod=1e9;
 int main (int argc, char* argv[]){//argv[0] English_name argv[1] group argv[2] length
-    int i, j;
+    int i, j,English_name;
     srand( time( NULL ) );
     char alphbet[52];
     alphbet[0]='a';
@@ -20,12 +20,13 @@ int main (int argc, char* argv[]){//argv[0] English_name argv[1] group argv[2] l
         alphbet[i+1]=alphbet[i]+1;
     if(argc!=1)
     {
-        int a=atoi(argv[2]),b=atoi(argv[3]),English_name=atoi(argv[1]);
+        int a=atoi(argv[1]),b=atoi(argv[2]);
         string name= "N"+to_string(a)+"M"+to_string(b);
-        cout<<English_name<<" "<<a<<" "<<b<<endl;
+        cout<<a<<" "<<b<<endl;
         ofstream out (name+".in");
         for(int k=0;k<a;k++)
         {
+            English_name=rand()%10+1;
             for( j = 0; j < English_name; j++ ){
                 out << alphbet[rand()% 52];
             }
@@ -41,6 +42,13 @@ int main (int argc, char* argv[]){//argv[0] English_name argv[1] group argv[2] l
     cout<<"end"<<endl;
     return 0;
 }
+
+
+
+
+
+
+
 
 
 

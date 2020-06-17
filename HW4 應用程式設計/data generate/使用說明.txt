@@ -1,4 +1,3 @@
-在DEBUG資料夾裡的檔案CMD中打入AA.exe 1 2 5
-第一個參數決定英文字母長度
-第二個參數決定有幾個GROUP
-第三個參數決定GROUP有幾個數字
+在DEBUG資料夾裡的檔案CMD中打入AA.exe 2 5
+第一個參數決定有幾個GROUP
+第二個參數決定GROUP有幾個數字
